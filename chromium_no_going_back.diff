@@ -1,0 +1,78 @@
+diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.cc b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
+index 1701965816..4014efe266 100644
+--- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
++++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
+@@ -2173,7 +2173,7 @@ void RenderViewContextMenu::AppendPluginItems() {
+ void RenderViewContextMenu::AppendPageItems() {
+   AppendExitFullscreenItem();
+ 
+-  menu_model_.AddItemWithStringId(IDC_BACK, IDS_CONTENT_CONTEXT_BACK);
++  //menu_model_.AddItemWithStringId(IDC_BACK, IDS_CONTENT_CONTEXT_BACK);
+   menu_model_.AddItemWithStringId(IDC_FORWARD, IDS_CONTENT_CONTEXT_FORWARD);
+   menu_model_.AddItemWithStringId(IDC_RELOAD, IDS_CONTENT_CONTEXT_RELOAD);
+   menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
+diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
+index 9c0f626a1d..dbd42a9ffd 100644
+--- a/chrome/browser/ui/browser_commands.cc
++++ b/chrome/browser/ui/browser_commands.cc
+@@ -651,14 +651,18 @@ void OpenURLOffTheRecord(Profile* profile, const GURL& url) {
+ }
+ 
+ bool CanGoBack(const Browser* browser) {
++  return false;
++/*
+   return browser->tab_strip_model()
+       ->GetActiveWebContents()
+       ->GetController()
+       .CanGoBack();
++*/
+ }
+ 
+ bool CanGoBack(content::WebContents* web_contents) {
+-  return web_contents->GetController().CanGoBack();
++  return false;
++  //return web_contents->GetController().CanGoBack();
+ }
+ 
+ enum class BackNavigationMenuIPHTrigger : int {
+@@ -706,6 +710,7 @@ void MaybeShowFeatureBackNavigationMenuPromo(Browser* browser,
+ }
+ 
+ void GoBack(Browser* browser, WindowOpenDisposition disposition) {
++/*
+   base::RecordAction(UserMetricsAction("Back"));
+ 
+   if (CanGoBack(browser)) {
+@@ -713,9 +718,11 @@ void GoBack(Browser* browser, WindowOpenDisposition disposition) {
+     new_tab->GetController().GoBack();
+     MaybeShowFeatureBackNavigationMenuPromo(browser, new_tab);
+   }
++*/
+ }
+ 
+ void GoBack(content::WebContents* web_contents) {
++/*
+   base::RecordAction(UserMetricsAction("Back"));
+ 
+   if (CanGoBack(web_contents)) {
+@@ -725,6 +732,7 @@ void GoBack(content::WebContents* web_contents) {
+       MaybeShowFeatureBackNavigationMenuPromo(browser, web_contents);
+     }
+   }
++*/
+ }
+ 
+ bool CanGoForward(const Browser* browser) {
+diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
+index f0ff0443c7..68f00598f4 100644
+--- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
++++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
+@@ -553,7 +553,7 @@ void ToolbarView::Init() {
+                           base::Unretained(this)));
+ 
+   home_->SetVisible(show_home_button_.GetValue());
+-
++  back_->SetVisible(false);
+   InitLayout();
+ 
+   for (auto* button : std::array<views::Button*, 5>{back_, forward_, reload_,
