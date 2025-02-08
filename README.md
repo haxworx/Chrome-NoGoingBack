@@ -3,6 +3,8 @@
 ## Description
 This patch ensures that users cannot navigate back in Chrome/Chromium browsers. Once applied, there is **no going back**—literally.
 
+<p align="center"><img src="./images/screenshot.png"></p>
+
 ## Installation Instructions
 To apply the patch, navigate to the Chromium source directory and run:
 
